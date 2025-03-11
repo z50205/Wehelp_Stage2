@@ -17,7 +17,7 @@ async def getAllAtractions(request: Request,page:int,keyword:str=None):
 async def getAllAtraction(request: Request,attractionId:int):
     result=AttractionData.getAttraction(attractionId)
     if result["status"]==200:
-        return JSONResponse(status_code=status.HTTP_200_OK,content=result["data"])
+        return JSONResponse(status_code=status.HTTP_200_OK,content=result["route_data"])
     elif result["status"]==400:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,content={"error": True,"message": "Not found specific attraction."})
     

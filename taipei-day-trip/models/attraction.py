@@ -36,7 +36,7 @@ class AttractionData(BaseModel):
             ans=page+1
         else:
             ans=None
-        return {"nextpage":ans,"data":attractions}
+        return {"nextPage":ans,"data":attractions}
     
     @classmethod
     def getAttraction(self,id):
@@ -48,8 +48,8 @@ class AttractionData(BaseModel):
         result = cur.fetchall()
         cnx.close()
         if result:
-            return {"status":200,"data":{"id":result[0][0],"name":result[0][1],"category":result[0][2],"description":result[0][3],"address":result[0][4],
-                                          "transport":result[0][5],"mrt":result[0][6],"lat":result[0][7],"lng":result[0][8],"images":images_converter(result[0][9])}}
+            return {"status":200,"route_data":{"data":{"id":result[0][0],"name":result[0][1],"category":result[0][2],"description":result[0][3],"address":result[0][4],
+                                          "transport":result[0][5],"mrt":result[0][6],"lat":result[0][7],"lng":result[0][8],"images":images_converter(result[0][9])}}}
         else:
             return {"status":400}
 
