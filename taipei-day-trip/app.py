@@ -1,5 +1,6 @@
 from fastapi import *
 from fastapi.responses import FileResponse
+from routers import router
 app= FastAPI()
 
 # Static Pages (Never Modify Code in this Block)
@@ -15,3 +16,5 @@ async def booking(request: Request):
 @app.get("/thankyou", include_in_schema=False)
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
+
+app.include_router(router)
