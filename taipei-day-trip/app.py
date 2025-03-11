@@ -1,5 +1,5 @@
 from fastapi import *
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse,JSONResponse
 from routers import router
 app= FastAPI()
 
@@ -18,3 +18,6 @@ async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 
 app.include_router(router)
+@app.exception_handler(500)
+async def  servererror_500(request:Request, exc: Exception):
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,content={"error":True,"message":exc.detail})
