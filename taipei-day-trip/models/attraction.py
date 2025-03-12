@@ -9,7 +9,7 @@ class AttractionData(BaseModel):
     description:str=None
     address:str=None
     transport:str=None
-    mrt:Optional[str]=None
+    mrt:Optional[int]=None
     lat:float=None
     lng:float=None
     images:str=None
@@ -20,10 +20,12 @@ class AttractionData(BaseModel):
         cnx=cnxpool.get_connection()
         cur=cnx.cursor()
         if keyword:
-            sql="select * from attractions where mrt = %s OR name like %s Limit %s offSET %s;"
+            sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images\
+                 from attractions a Join mrts m on m.id=a.mrt where m.mrt_name = %s OR a.name like %s Limit %s offSET %s;"
             val=(keyword,"%"+keyword+"%",perpage+1,page*perpage)
         else:
-            sql="select * from attractions Limit %s offSET %s;"
+            sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images \
+             from attractions a Join mrts m on m.id=a.mrt Limit %s offSET %s;"
             val=(perpage+1,page*perpage)
         cur.execute(sql,val)
         result = cur.fetchall()
@@ -42,7 +44,8 @@ class AttractionData(BaseModel):
     def getAttraction(self,id):
         cnx=cnxpool.get_connection()
         cur=cnx.cursor()
-        sql="select * from attractions where id = %s;"
+        sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images\
+        from attractions a Join mrts m on m.id=a.mrt where a.id = %s;"
         val=(id,)
         cur.execute(sql,val)
         result = cur.fetchall()
@@ -52,20 +55,6 @@ class AttractionData(BaseModel):
                                           "transport":result[0][5],"mrt":result[0][6],"lat":result[0][7],"lng":result[0][8],"images":images_converter(result[0][9])}}}
         else:
             return {"status":400}
-
-    @classmethod
-    def getMrts(self):
-        cnx=cnxpool.get_connection()
-        cur=cnx.cursor()
-        sql="select mrt from attractions group by mrt order by count(mrt) desc;"
-        cur.execute(sql,)
-        result = cur.fetchall()
-        cnx.close()
-        mrts=[]
-        for res in result:
-            if res[0]:
-                mrts.append(res[0])
-        return {"data":mrts}
     
 def images_converter(data):
     images_raw=data.split("https")

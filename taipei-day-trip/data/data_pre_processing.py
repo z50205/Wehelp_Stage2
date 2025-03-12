@@ -33,6 +33,49 @@ try:
     cnx=cnxpool.get_connection()
     cur=cnx.cursor()
     cur.execute("use website;")
+    cur.execute("drop table mrts;")
+    cur.execute("create table mrts(\
+    id bigint primary key AUTO_INCREMENT,\
+    mrt_name varchar(100) NOT NULL\
+    );")
+
+    mrt_dict={}
+    for i in range(len(spot_info_json["result"]["results"])):
+        key=spot_info_json["result"]["results"][i]["MRT"]
+        if key not in mrt_dict and key:
+            mrt_dict[key]=1
+        elif key:
+            mrt_dict[key]+=1
+    mrt_dict_sorted=dict(sorted(mrt_dict.items(),key=lambda mrt:mrt[1], reverse=True))
+    mrts=list(mrt_dict_sorted.keys())
+    mrts_dict={}
+    for i in range(len(mrts)):
+        cnx=cnxpool.get_connection()
+        cur=cnx.cursor()
+        id_v=i+1
+        mrt_v=mrts[i]
+        mrts_dict[mrt_v]=id_v
+        sql=("Insert into mrts (id,mrt_name) values (%s,%s);")
+        val = (id_v,mrt_v)
+        cur.execute(sql, val)
+        cnx.commit()
+        cnx.close()
+
+
+except conn.Error as err:
+    if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+        print("already exists.")
+    else:
+        print(err)
+        exit(1)
+
+
+# Step2：attractions資料表建立[id,name,description,address,transport,mrt,lat,lng,images]
+try:
+    cnx=cnxpool.get_connection()
+    cur=cnx.cursor()
+    cur.execute("use website;")
+    cur.execute("drop table attractions;")
     cur.execute("create table attractions(\
     id bigint primary key AUTO_INCREMENT,\
     name varchar(255) NOT NULL,\
@@ -40,7 +83,7 @@ try:
     description varchar(2000) NOT NULL,\
     address varchar(255) NOT NULL,\
     transport varchar(500) NOT NULL,\
-    mrt varchar(255),\
+    mrt bigint,\
     lat FLOAT NOT NULL,\
     lng FLOAT NOT NULL,\
     images varchar(5000) NOT NULL\
@@ -54,7 +97,10 @@ try:
         description_v=spot_info_json["result"]["results"][i]["description"]
         address_v=spot_info_json["result"]["results"][i]["address"]
         transport_v=spot_info_json["result"]["results"][i]["direction"]
-        mrt_v=spot_info_json["result"]["results"][i]["MRT"]
+        if spot_info_json["result"]["results"][i]["MRT"]:
+            mrt_v=mrts_dict[spot_info_json["result"]["results"][i]["MRT"]]
+        else:
+            mrt_v=None
         lat_v=spot_info_json["result"]["results"][i]["latitude"]
         lng_v=spot_info_json["result"]["results"][i]["longitude"]
         images_v=spot_info_json["result"]["results"][i]["file"]
@@ -63,11 +109,17 @@ try:
         cur.execute(sql, val)
         cnx.commit()
         cnx.close()
-
 except conn.Error as err:
     if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
         print("already exists.")
     else:
         print(err)
         exit(1)
+cnx=cnxpool.get_connection()
+cur=cnx.cursor()
+sql="ALTER TABLE attractions \
+ADD CONSTRAINT FK_MRT \
+FOREIGN KEY (mrt) REFERENCES mrts(id); "
+cur.execute(sql,)
+cnx.commit()
 cnx.close()

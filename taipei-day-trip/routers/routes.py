@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi.responses import HTMLResponse,RedirectResponse,JSONResponse
 from fastapi.requests import HTTPConnection
 import os
-from models import AttractionData
+from models import AttractionData,MrtData
 import json
 
 router = APIRouter()
@@ -24,5 +24,5 @@ async def getAllAtraction(request: Request,attractionId:int):
 
 @router.get("/api/mrts",response_class=HTMLResponse, tags=["getmrts"])
 async def getAllMrts(request: Request):
-    result=AttractionData.getMrts()
+    result=MrtData.getMrts()
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
