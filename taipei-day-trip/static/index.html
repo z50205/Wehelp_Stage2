@@ -3,9 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="static/styles/index.css">
+  <script src="static/scripts/index.js" defer></script>
   <title>Index</title>
 </head>
 <body>
-  
+  <nav>
+    <div class="navbar">
+      <div class="navbar-title">台北一日遊</div>
+      <div class="navbar-items">
+        <div class="navbar-item">預定行程</div>
+        <div class="navbar-item">登入/註冊</div>
+      </div>
+    </div>
+  </nav>
+  <div class="search">
+    <img class="search-bg" src="static/nav_bg.png" />
+    <div class="search-inner">
+      <div class="search-intro">
+        <div class="search-intro-text2">輕鬆享受台北一日悠閒</div>
+        <div class="search-intro-text">探索每個角落，體驗城市的深度旅遊行程</div>
+      </div>
+      <div class="search-bar">
+        <input class="search-bar-text" placeholder="輸入景點名稱查詢" />
+        <div class="search-bar-button" onclick="searchClick()">
+          <img class="search-bar-button-icon" src="static/icons/search.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="content-inner">
+      <div class="listbar">
+        <div class="listbar-inner">
+          <div class="listbar-button-left">
+            <img class="listbar-button-icon" src="static/icons/left.png" />
+          </div>
+          <div class="listbar-content">
+            <div class="listbar-content-inner">
+            </div>
+          </div>
+          <div class="listbar-button-right">
+            <img class="listbar-button-icon" src="static/icons/right.png" />
+          </div>
+        </div>
+      </div>
+      <div class="attraction">
+      </div>
+    </div>
+  </div>
+  <nav class="footer">
+    <div class="footer-item">
+      COPYRIGHT © 2021 台北一日遊
+    </div>
+  </nav>
 </body>
 </html>
