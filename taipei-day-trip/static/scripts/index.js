@@ -41,45 +41,50 @@ let scroll=0;
 let scroll_step=300;
 let keyWord=null;
 let nextPage=null;
+let fetchOnce=true;
 async function attraction_add(page){
-    let attraction_parent=document.getElementsByClassName("attraction")[0];
-    if (keyWord==null){
-        response=await fetch("api/attractions?page="+page);
-    }else{
-        response=await fetch("api/attractions?page="+page+"&keyword="+keyWord);
-    }
-    result=await response.json();
-    let attractions=result["data"];
-    nextPage=result["nextPage"];
-    for (i in attractions){
-        let title=document.createElement("div");
-        title.setAttribute("class","attraction-item-title");
-        title.textContent=attractions[i]["name"];
-        let titlediv=document.createElement("div");
-        titlediv.setAttribute("class","attraction-item-titlediv");
-        titlediv.appendChild(title);
-        let img=document.createElement("img");
-        img.setAttribute("class","attraction-item-image");
-        img.setAttribute("src",attractions[i]["images"][0]);
-        let imagediv=document.createElement("div");
-        imagediv.setAttribute("class","attraction-item-imagediv");
-        imagediv.appendChild(img);
-        imagediv.appendChild(titlediv);
-        let info1=document.createElement("div");
-        info1.setAttribute("class","attraction-item-info");
-        info1.textContent=attractions[i]["mrt"];
-        let info2=document.createElement("div");
-        info2.setAttribute("class","attraction-item-info");
-        info2.textContent=attractions[i]["category"];
-        let infodiv=document.createElement("div");
-        infodiv.setAttribute("class","attraction-item-infodiv");
-        infodiv.appendChild(info1);
-        infodiv.appendChild(info2);
-        let item=document.createElement("div");
-        item.setAttribute("class","attraction-item");
-        item.appendChild(imagediv);
-        item.appendChild(infodiv);
-        attraction_parent.appendChild(item);
+    if (fetchOnce){
+        fetchOnce=false;
+        let attraction_parent=document.getElementsByClassName("attraction")[0];
+        if (keyWord==null){
+            response=await fetch("api/attractions?page="+page);
+        }else{
+            response=await fetch("api/attractions?page="+page+"&keyword="+keyWord);
+        }
+        result=await response.json();
+        let attractions=result["data"];
+        nextPage=result["nextPage"];
+        for (i in attractions){
+            let title=document.createElement("div");
+            title.setAttribute("class","attraction-item-title");
+            title.textContent=attractions[i]["name"];
+            let titlediv=document.createElement("div");
+            titlediv.setAttribute("class","attraction-item-titlediv");
+            titlediv.appendChild(title);
+            let img=document.createElement("img");
+            img.setAttribute("class","attraction-item-image");
+            img.setAttribute("src",attractions[i]["images"][0]);
+            let imagediv=document.createElement("div");
+            imagediv.setAttribute("class","attraction-item-imagediv");
+            imagediv.appendChild(img);
+            imagediv.appendChild(titlediv);
+            let info1=document.createElement("div");
+            info1.setAttribute("class","attraction-item-info");
+            info1.textContent=attractions[i]["mrt"];
+            let info2=document.createElement("div");
+            info2.setAttribute("class","attraction-item-info");
+            info2.textContent=attractions[i]["category"];
+            let infodiv=document.createElement("div");
+            infodiv.setAttribute("class","attraction-item-infodiv");
+            infodiv.appendChild(info1);
+            infodiv.appendChild(info2);
+            let item=document.createElement("div");
+            item.setAttribute("class","attraction-item");
+            item.appendChild(imagediv);
+            item.appendChild(infodiv);
+            attraction_parent.appendChild(item);
+        }
+        fetchOnce=true;
     }
 }
 async function getAttractionsByMrt(keyword){
