@@ -45,7 +45,7 @@ let fetchOnce=true;
 async function attraction_add(page){
     if (fetchOnce){
         fetchOnce=false;
-        let attraction_parent=document.getElementsByClassName("attraction")[0];
+        let attraction_parent=document.getElementsByClassName("attraction-inner")[0];
         if (keyWord==null){
             response=await fetch("api/attractions?page="+page);
         }else{
@@ -88,13 +88,13 @@ async function attraction_add(page){
     }
 }
 async function getAttractionsByMrt(keyword){
-    let attraction_parent=document.getElementsByClassName("attraction")[0];
+    let attraction_parent=document.getElementsByClassName("attraction-inner")[0];
     attraction_parent.replaceChildren();
     keyWord=keyword;
     attraction_add(0);
 }
 async function searchClick(){
-    let attraction_parent=document.getElementsByClassName("attraction")[0];
+    let attraction_parent=document.getElementsByClassName("attraction-inner")[0];
     attraction_parent.replaceChildren();
     keyWord=document.getElementsByClassName("search-bar-text")[0].value;
     attraction_add(0);

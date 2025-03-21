@@ -21,11 +21,11 @@ class AttractionData(BaseModel):
         cur=cnx.cursor()
         if keyword:
             sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images\
-                 from attractions a Join mrts m on m.id=a.mrt where m.mrt_name = %s OR a.name like %s Limit %s offSET %s;"
+                 from attractions a left Join mrts m on m.id=a.mrt where m.mrt_name = %s OR a.name like %s Limit %s offSET %s;"
             val=(keyword,"%"+keyword+"%",perpage+1,page*perpage)
         else:
             sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images \
-             from attractions a Join mrts m on m.id=a.mrt Limit %s offSET %s;"
+             from attractions a left Join mrts m on m.id=a.mrt Limit %s offSET %s;"
             val=(perpage+1,page*perpage)
         cur.execute(sql,val)
         result = cur.fetchall()
@@ -45,7 +45,7 @@ class AttractionData(BaseModel):
         cnx=cnxpool.get_connection()
         cur=cnx.cursor()
         sql="select a.id,a.name,a.category,a.description,a.address,a.transport,m.mrt_name,a.lat,a.lng,a.images\
-        from attractions a Join mrts m on m.id=a.mrt where a.id = %s;"
+        from attractions a left Join mrts m on m.id=a.mrt where a.id = %s;"
         val=(id,)
         cur.execute(sql,val)
         result = cur.fetchall()

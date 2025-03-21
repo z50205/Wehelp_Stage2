@@ -7,8 +7,6 @@ nav{
  display: flex;
  justify-content: center;
  align-items: center;
- padding-top: 10px;
- padding-bottom: 10px;
 }
 
 .navbar{
@@ -196,6 +194,13 @@ textarea:focus,input:focus{
     flex-wrap: wrap;
     justify-content: center;
 }
+.attraction-inner{
+    flex:1 0 100%;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .attraction-item{
     flex:1 0 20%;
     max-width: 270px;
@@ -272,21 +277,23 @@ textarea:focus,input:focus{
     .search-inner{
         width: 100%;;
     }
-}
-@media (max-width: 900px) {
     .attraction-item{
         flex:1 0 25%;
     }
 }
-@media (max-width: 700px) {
+@media (max-width: 900px) {
     .attraction-item{
         flex:1 0 33%;
     }
 }
-@media (max-width: 550px) {
+@media (max-width: 600px) {
     .attraction-item{
         flex:1 0 50%;
+        max-width: 90%;
+
     }
+}
+@media (max-width: 550px) {
     .search-bar{
         width:100%;
     }
