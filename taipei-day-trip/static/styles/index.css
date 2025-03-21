@@ -93,6 +93,7 @@ nav{
     font-weight: 700;
     font-size: 16px;
     border:none;
+    font-family: 'Noto Sans TC';
 }
 .search-bar-text:focus{
     border:none;
