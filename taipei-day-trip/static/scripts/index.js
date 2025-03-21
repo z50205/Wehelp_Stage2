@@ -21,10 +21,12 @@ async function init(){
         }
     })
     document.addEventListener("scroll",()=>{
-        let body=document.getElementsByTagName("body")[0];
-        if (body.getBoundingClientRect().bottom<=window.innerHeight+1)
-        {
-            attraction_add(nextPage);
+        if (nextPage!=null){
+            let body=document.getElementsByTagName("body")[0];
+            if (body.getBoundingClientRect().bottom<=window.innerHeight+1)
+            {
+                attraction_add(nextPage);
+            }
         }
     })
     for (i in mrts){
@@ -91,6 +93,8 @@ async function getAttractionsByMrt(keyword){
     let attraction_parent=document.getElementsByClassName("attraction-inner")[0];
     attraction_parent.replaceChildren();
     keyWord=keyword;
+    let search_text=document.getElementsByClassName("search-bar-text")[0];
+    search_text.value=keyword;
     attraction_add(0);
 }
 async function searchClick(){
