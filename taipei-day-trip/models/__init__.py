@@ -17,3 +17,4 @@ dbconfig = {
 cnxpool = pooling.MySQLConnectionPool(pool_name = "mypool",pool_size = 20,**dbconfig)
 
 from .attraction import AttractionData
+from .mrt import MrtData
