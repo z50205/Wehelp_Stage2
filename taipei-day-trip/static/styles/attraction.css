@@ -1,0 +1,295 @@
+body{
+    margin:0px;
+    font-family: 'Noto Sans TC';
+ }
+ nav{
+  background-color:white;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ 
+ .navbar{
+     width: 100%;
+     max-width:1200px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;    
+ }
+ .navbar-title{
+     color:#448899;
+     font-size: 30px;
+     font-weight: 700;
+     padding: 10px;
+ }
+ .navbar-items{
+     display: flex;
+     font-size: 16px;
+     font-weight: 500;
+ }
+ .navbar-item{
+     color:#448899;
+     font-size: 16px;
+     font-weight: 500;
+     padding: 10px;
+ }
+ .attraction-info{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+ }
+ .attraction-info-inner{
+    flex: 1 0 100%;
+    max-width: 1200px;
+ }
+ .attraction-info1{
+    flex: 1 0 0%;
+    display: flex;
+    height: 400px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+ }
+ .attraction-imgdiv{
+    flex:1 0 40%;
+    margin-left: 15px;
+    margin-right: 30px;
+ }
+ .attraction-imgdiv-inner{
+   position: relative;
+   width:100%;
+   height: 100%;
+ }
+ .attraction-img{
+   display: none;
+    height:100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    max-height: 400px;
+ }
+ .attraction-img.active{
+   display: unset;
+   animation-name: fade;
+   animation-duration: 1s;
+}
+ .attraction-img-floatdiv1{
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0px;
+   right: 0px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   align-content: center;
+   padding: 10px;
+   box-sizing: border-box;
+   max-height: 400px;
+ }
+ .attraction-img-floatdiv2{
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0px;
+   right: 0px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-content: end;
+   padding: 10px;
+   box-sizing: border-box;
+   max-height: 400px;
+ }
+ .attraction-slide-dotdiv{
+   opacity: 75%;
+   display: flex;
+ }
+ .attraction-slide-dot{
+   height: 12px;
+   width: 12px;
+   margin:0px 6px 0px 6px;
+   background-color: #FFFFFF;
+   border-radius: 50%;
+   display: flex;
+   position: relative;
+   align-content: center;
+   justify-content: center;
+   flex-wrap: wrap ;
+ }
+ .attraction-slide-dot.active{
+   background-color: #000000;
+   border: 1px solid #FFFFFF;
+   box-sizing: border-box;
+ }
+ .attraction-reserve{
+    width: 50%;
+    margin-right: 15px;
+ }
+ .attraction-title{
+    height: 33px;
+    font-size: 24px;
+    font-weight: 700;
+ }
+ .attraction-title{
+    height: 33px;
+    font-size: 24px;
+    font-weight: 700;
+ }
+ .attraction-station{
+    height: 22px;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 15px;
+    margin-bottom: 20px;
+ }
+ .attraction-reserveform{
+    margin-bottom: 8px;
+    height: 302px;
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    overflow: auto;
+ }
+ .attraction-reserveform-label{
+   display: flex;
+   height:fit-content;
+   align-items: center;
+   font-size: 16px;
+   font-weight: 700;
+   margin-top:15px;
+   margin-bottom:15px;
+   margin-left: 20px;
+   margin-right: 20px;
+ }
+ .attraction-reserveform-text{
+   font-size: 16px;
+   font-weight: 400;
+   margin-top:15px;
+   margin-bottom:15px;
+   margin-left: 20px;
+   margin-right: 20px;
+ }
+ .attraction-reserveform-time{
+   display: flex;
+   align-content: center;
+   flex-wrap: wrap;
+   font-weight: 400;
+   padding-left: 5px;
+   padding-right: 5px;
+ }
+ .dot {
+   height: 22px;
+   width: 22px;
+   background-color: #FFFFFF;
+   border-radius: 50%;
+   display: flex;
+   position: relative;
+   align-content: center;
+   justify-content: center;
+   flex-wrap: wrap ;
+ }
+ .inner-dot {
+   height: 18px;
+   width: 18px;
+   background-color: #448899;
+   border-radius: 50%;
+ }
+ .attraction-reserveform-button{
+   display: flex;
+   height:fit-content;
+   align-items: center;
+   background: #448899;
+   border: 0;
+   color: white;
+   padding: 10px 20px 10px 20px;
+   border-radius: 5px;
+   font-size: 19px;
+   margin-top:25px;
+   margin-left:20px;
+ }
+ .attraction-reserveform-calender{
+   background-color: #FFFFFF;
+   display: flex;
+   flex-wrap: wrap;
+   height: 35px;
+   align-content: center;
+   padding-left: 10px;
+   padding-right: 10px;
+   padding-top: 5px;
+   padding-bottom: 5px;
+ }
+ .attraction-reserveform-calender-date{
+   position: relative;
+   width: 150px;
+   height: 25px;
+ }
+ .attraction-reserveform-calender-date::before {
+   content: "yyyy/mm/dd";
+   color: #000000;
+   position: absolute;
+ }
+ .attraction-info2{
+   flex: 1 0 0%;
+   margin-top: 40px;
+   margin-bottom: 40px;
+}
+.attraction-desc{
+   font-weight: 400;
+   padding: 10px;
+}
+.attraction-desc-title{
+   font-weight: 700;
+}
+.attraction-desc-text{
+   font-weight: 400;
+}
+ .footer{
+    width: 100%;
+    background-color: #757575;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.footer-item{
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    font-style: Noto Sans TC;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+@media (max-width: 900px) {
+   .attraction-info1{
+      height:fit-content;
+      margin-top: 0px;
+      border-radius: 0px;
+  }
+   .attraction-imgdiv{
+       flex:1 0 50%;
+       margin:0px;
+   }
+   .attraction-img{
+      border-radius: 0px;
+      height: 350px;
+      padding: 0px;
+   }
+   .attraction-reserve{
+      flex:1 0 50%;
+      margin:20px 10px 0px 10px;
+   }
+   .attraction-reserveform-button{
+      margin-top:0px;
+    }
+   .divider{
+      margin-left: 10px;
+      margin-right: 10px;
+   }
+}
+@keyframes fade {
+   from {opacity: 0}
+   to {opacity: 1}
+}
