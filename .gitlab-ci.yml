@@ -1,0 +1,13 @@
+stages:
+  - deploy
+
+deploy-to-production:
+  stage: deploy
+  tags:
+    - docker_try
+  before_script:
+    - chmod 400 $SSH_KEY
+  script:
+    - echo 'Deploy with deploy file in EC2.'
+    - echo 'Kill the background pid.'
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$EC2_IP "$DEPLOY_COMMAND"
