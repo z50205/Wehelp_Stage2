@@ -84,7 +84,11 @@ async function attraction_add(page){
             item.setAttribute("class","attraction-item");
             item.appendChild(imagediv);
             item.appendChild(infodiv);
-            attraction_parent.appendChild(item);
+            let link=document.createElement("a");
+            link.setAttribute("href","attraction/"+attractions[i]["id"]);
+            link.style.textDecoration = "none";
+            link.appendChild(item);
+            attraction_parent.appendChild(link);
         }
         fetchOnce=true;
     }
