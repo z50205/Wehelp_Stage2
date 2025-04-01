@@ -136,7 +136,5 @@ const getMembership=async ()=>{
 getMembership();
 async function logout(){
     localStorage.removeItem("TOKEN");
-    let memberButton=document.getElementById("member-button");
-    memberButton.textContent="登入/註冊";
-    memberButton.onclick = ()=>showUserForm(true);
+    window.location.reload();
 }
