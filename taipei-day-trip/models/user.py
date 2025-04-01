@@ -28,7 +28,7 @@ class UserData(BaseModel):
             return {"error": True,"message": message}
         try:
             dt_iso = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds').replace("+00:00", "Z")
-            sql="Insert into userdata (id,email,password_hash,name,create_time) values (%s,%s,%s,%s,%s);"
+            sql="Insert into users (id,email,password_hash,name,create_time) values (%s,%s,%s,%s,%s);"
             val=(str(uuid.uuid4()),email,self.set_pw(self,password),name,dt_iso)
             cur.execute(sql,val)
             cnx.commit()
@@ -48,7 +48,7 @@ class UserData(BaseModel):
         cnx=cnxpool.get_connection()
         cur=cnx.cursor()
         try:
-            sql="select * from userdata where email=%s;"
+            sql="select * from users where email=%s;"
             val=(email,)
             cur.execute(sql,val)
             result = cur.fetchall()
@@ -81,7 +81,7 @@ class UserData(BaseModel):
             jwt_result=jwt.decode(jwt_token, JWT_SECRET, algorithms=["HS256"])
             # exist, all auth correct.
             if datetime.datetime.strptime(jwt_result["expire"], '%Y-%m-%dT%H:%M:%S%z')>datetime.datetime.now(datetime.timezone.utc) :
-                sql="select * from userdata where id=%s;"
+                sql="select * from users where id=%s;"
                 val=(jwt_result["id"],)
                 cur.execute(sql,val)
                 result = cur.fetchall()
