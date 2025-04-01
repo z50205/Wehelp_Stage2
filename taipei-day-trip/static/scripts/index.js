@@ -81,12 +81,12 @@ async function attraction_add(page){
             infodiv.appendChild(info1);
             infodiv.appendChild(info2);
             let item=document.createElement("div");
-            item.setAttribute("class","attraction-item");
             item.appendChild(imagediv);
             item.appendChild(infodiv);
             let link=document.createElement("a");
             link.setAttribute("href","attraction/"+attractions[i]["id"]);
             link.style.textDecoration = "none";
+            link.setAttribute("class","attraction-item");
             link.appendChild(item);
             attraction_parent.appendChild(link);
         }

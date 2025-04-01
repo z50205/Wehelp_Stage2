@@ -6,6 +6,7 @@ import os
 load_dotenv()
 DB_USERNAME = os.environ.get("DB_USERNAME","1234")
 DB_PASSWORD = os.environ.get("DB_PASSWORD","1234")
+JWT_SECRET=os.environ.get("JWT_SECRET","secret")
 
 dbconfig = {
   "host":"localhost",
@@ -18,3 +19,5 @@ cnxpool = pooling.MySQLConnectionPool(pool_name = "mypool",pool_size = 20,**dbco
 
 from .attraction import AttractionData
 from .mrt import MrtData
+
+from .user import UserData
