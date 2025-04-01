@@ -3,7 +3,8 @@ import mysql.connector as conn
 from typing import Optional
 from . import cnxpool,conn,JWT_SECRET
 from passlib.hash import pbkdf2_sha256
-import datetime
+import time, datetime
+from datetime import timezone
 import uuid
 import jwt
 
@@ -58,9 +59,7 @@ class UserData(BaseModel):
                 return {"error": True,"message":message}
             # User exist, auth correct.
             elif self.check_pw(self,password,result[0][2]):
-                dt = datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=7)
-                dt_sec = dt.isoformat(timespec='seconds') 
-                encoded_jwt = jwt.encode({"id":result[0][0],"name":result[0][1],"email":result[0][3],"expire":dt_sec}, JWT_SECRET, algorithm="HS256")
+                encoded_jwt = jwt.encode({"id":result[0][0],"name":result[0][1],"email":result[0][3],"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(days=7)}, JWT_SECRET, algorithm="HS256")
                 return {"token":encoded_jwt}
             # User exist, auth incorrect.
             else:
@@ -80,15 +79,17 @@ class UserData(BaseModel):
         try:
             jwt_result=jwt.decode(jwt_token, JWT_SECRET, algorithms=["HS256"])
             # exist, all auth correct.
-            if datetime.datetime.strptime(jwt_result["expire"], '%Y-%m-%dT%H:%M:%S%z')>datetime.datetime.now(datetime.timezone.utc) :
-                sql="select * from users where id=%s;"
-                val=(jwt_result["id"],)
-                cur.execute(sql,val)
-                result = cur.fetchall()
-                return {"data":{"id":result[0][0],"name":result[0][1],"email":result[0][3]}}
+            sql="select * from users where id=%s;"
+            val=(jwt_result["id"],)
+            cur.execute(sql,val)
+            result = cur.fetchall()
+            return {"data":{"id":result[0][0],"name":result[0][1],"email":result[0][3]}}
             # expire.
-            else:
-                return None
+        except jwt.exceptions.ExpiredSignatureError as e:
+            print("Something went wrong: {}".format(e))
+            return None
+            # Exception:other exception
+
             # Exception:auth error.
         except jwt.exceptions.InvalidSignatureError as e:
             print("Something went wrong: {}".format(e))
