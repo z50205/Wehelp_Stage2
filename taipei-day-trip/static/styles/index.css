@@ -268,6 +268,7 @@ textarea:focus,input:focus{
     padding-top: 40px;
     padding-bottom: 40px;
 }
+
 .footer-item{
     color: #FFFFFF;
     font-weight: 700;
@@ -276,6 +277,8 @@ textarea:focus,input:focus{
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
+
 @media (max-width: 1200px) {
     .search-inner{
         width: 100%;;
