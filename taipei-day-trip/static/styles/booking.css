@@ -1,0 +1,226 @@
+body{
+    margin:0px;
+    font-family: 'Noto Sans TC';
+ }
+ nav{
+  background-color:white;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ 
+ .navbar{
+     width: 100%;
+     max-width:1200px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;    
+ }
+ .navbar-title{
+     color:#448899;
+     font-size: 30px;
+     font-weight: 700;
+     padding: 10px;
+ }
+ .navbar-items{
+     display: flex;
+     font-size: 16px;
+     font-weight: 500;
+ }
+ .navbar-item{
+     color:#448899;
+     font-size: 16px;
+     font-weight: 500;
+     padding: 10px;
+ }
+ .booking-container{
+   display: none;
+   justify-content: center;
+   width: 100%;
+   flex-wrap: wrap;
+ }
+ .booking-container-inner{
+  flex :1 0 100%;
+  justify-content: center;
+  max-width: 1200px;
+  flex-wrap: wrap;
+}
+ .booking{
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+ }
+ .booking-div{
+   flex:1 0 100%;
+   display: flex;
+   justify-content: center;
+   max-width: 1000px;
+   margin:40px 0px 40px 0px;
+   flex-wrap: wrap;
+ }
+ .booking-header{
+  display: flex;
+   flex:1 0 100%;
+   font-weight: 700;
+   font-size: 19px;
+ }
+ .booking-fail-text{
+  flex:1 0 100%;
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 30px;
+ }
+ .booking-info{
+   display: flex;
+   margin:30px 10px 0px 10px;
+   flex:1;
+ }
+ .booking-info-imgdiv{
+   margin-right: 30px;
+   max-width: 250px;
+   overflow: hidden;
+   display: flex;
+   align-content: center;
+   justify-content: center;
+   flex:1 0 100%;
+   flex-wrap: wrap;
+ }
+ .booking-info-img{
+   max-width: 250px;
+   height: 200px;
+   object-fit: cover;
+ }
+ .booking-info-text{
+   flex: 1;
+   position: relative;
+ }
+ .booking-info-text-title{
+  display: flex;
+   font-weight: 700;
+   font-size: 16px;
+   color:#448899;
+   margin-bottom: 20px;
+ }
+ .booking-info-text-item{
+  display: flex;
+   font-weight: 400;
+   font-size: 16px;
+   color:#666666;
+   margin: 10px 0px 10px 0px;
+ }
+ .booking-info-text-icondiv{
+   position:absolute;
+   top:0px;
+   right:0px;
+ }
+ .booking-info-text-icon{
+   width: 30px;
+ }
+ .booking-contact-title{
+   flex: 1 0 90%;
+   font-weight: 700;
+   font-size: 19px;
+   color: #666666;
+   margin: 0px 10px 20px 10px;
+ }
+ .booking-contact-item{
+   display: flex;
+   flex: 1 0 90%;
+   font-weight: 400;
+   font-size: 16px;
+   color: #666666;
+   margin: 0px 10px 15px 10px;
+ }
+ .booking-contact-footer{
+   flex: 1 0 90%;
+   font-weight: 700;
+   font-size: 16px;
+   color: #666666;
+   margin: 0px 10px 0px 10px;
+ }
+ .booking-button-div{
+   flex: 1 0 90%;
+   position: relative;
+   margin: 0px 10px 0px 10px;
+   height: 100px;
+ }
+ .booking-button-text{
+  display: flex;
+   position: absolute;
+   top:0px;
+   right: 0px;
+   font-weight: 700;
+   color: #666666;
+   font-size: 16px;
+ }
+ .booking-button{
+   position: absolute;
+   top:42px;
+   right: 0px;
+   font-weight: 400;
+   font-family: 'Noto Sans TC';
+   background-color: #448899;
+   padding:10px 20px 10px 20px;
+   color: #FFFFFF;
+   font-size: 16px;
+   border-radius: 5px;
+ }
+ .dot {
+   height: 22px;
+   width: 22px;
+   background-color: #FFFFFF;
+   border-radius: 50%;
+   display: flex;
+   position: relative;
+   align-content: center;
+   justify-content: center;
+   flex-wrap: wrap ;
+ }
+ .inner-dot {
+   height: 18px;
+   width: 18px;
+   background-color: #448899;
+   border-radius: 50%;
+ }
+ .footer{
+    width: 100%;
+    background-color: #757575;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.footer-item{
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    font-style: Noto Sans TC;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+@media (max-width: 900px) {
+   .booking-header{
+      flex:1 0 90%;
+      margin: 0px 10px 0px 10px;
+   }
+   .booking-fail-text{
+    flex:1 0 90%;
+    margin: 30px 10px 0px 10px;
+   }
+   .booking-info{flex-wrap: wrap;}
+   .booking-info-text{flex:1 0 100%;margin-top: 30px;height: 200px;}
+   .booking-info-imgdiv{max-width: unset;}
+   .booking-info-img{max-width: unset;flex:1;}
+   .booking-info-text-icondiv{
+      position:absolute;
+      top:unset;
+      bottom:0px;
+      right:0px;
+    }
+}
+@keyframes fade {
+   from {opacity: 0}
+   to {opacity: 1}
+}

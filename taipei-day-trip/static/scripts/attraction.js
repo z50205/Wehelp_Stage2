@@ -90,3 +90,44 @@ function timeChoose(part){
     let timeDotParent_anoter=document.getElementsByClassName("dot")[time_pivot[1]];
     timeDotParent_anoter.removeChild(timeDotParent_anoter.firstChild);}
 }
+
+let bookingForm=document.getElementById("booking-form");
+bookingForm.addEventListener('submit',createBooking);
+async function createBooking(event){
+    event.preventDefault();
+    try{
+        let attractionId=parseInt(location.pathname.split("/")[2]);
+        let timeText;
+        let price;
+        let date=document.getElementById("booking-time").value;
+        if (time==0){
+            timeText="morning";
+            price=2000;
+        }else if(time==1){
+            timeText="afternoon";
+            price=2500;
+        }if (attractionId && timeText && price && date){
+            const formData = new FormData();
+            formData.append("attractionId",attractionId );
+            formData.append("date", date);
+            formData.append("time", timeText);
+            formData.append("price", price);
+            const response=await fetch("/api/booking",{
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer `+localStorage.getItem("TOKEN"),
+                },
+                body: formData,
+            });
+            const result=await response.json();
+            if (result["ok"]){
+                window.location.href="/booking"
+            }else{
+                showUserForm(true);
+            }
+        }
+    }catch (error) {
+        showUserForm(true);
+    }
+
+}
