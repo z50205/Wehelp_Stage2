@@ -3,9 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"  href="/static/styles/booking.css">
+  <link rel="stylesheet"  href="/static/styles/popup.css">
+  <script src="/static/scripts/popup.js" defer></script>
+  <script src="/static/scripts/booking.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
   <title>Booking</title>
 </head>
 <body>
-  
+  <div id="form-mask" class="mask active">
+    <div id="login-div" class="popup-form">
+      <div class="decobar"></div>
+      <div class="closeicondiv">
+        <img class="closeicon" src="/static/icons/close.png" onclick="showUserForm(false)"/>
+      </div>
+      <form id="login-form" class="login-form">
+        <div class="form-title">
+          登入會員帳號
+        </div>
+        <input type="email" id="login-email" class="form-item" name="email" placeholder="輸入電子信箱" required/>
+        <input type="password" id="login-pw" class="form-item" name="password" placeholder="輸入密碼" required/>
+        <button class="form-button">登入帳戶</button>
+        <div id="login-log" class="form-log"></div>
+        <div class="form-text" onclick="toggleUserForm('signup')">還沒有帳戶?點此註冊</div>
+      </form>
+    </div>
+    <div id="signup-div" class="popup-form">
+      <div class="decobar"></div>
+      <div class="closeicondiv">
+        <img class="closeicon" src="/static/icons/close.png" onclick="showUserForm(false)"/>
+      </div>
+      <form id="signup-form" class="login-form">
+        <div class="form-title">
+          註冊會員帳號
+        </div>
+        <input id="signup-name" class="form-item" placeholder="輸入姓名"  required/>
+        <input type="email" id="signup-email" class="form-item" placeholder="輸入電子信箱"  required/>
+        <input type="password" id="signup-pw" class="form-item" placeholder="輸入密碼"/>
+        <button class="form-button">註冊新帳戶</button>
+        <div id="signup-log" class="form-log"></div>
+        <div class="form-text" onclick="toggleUserForm('login')">已經有帳戶了?點此登入</div>
+      </form>
+    </div>
+  </div>
+  <nav>
+    <div class="navbar">
+      <a href="/" style="text-decoration: none;"><div class="navbar-title">台北一日遊</div></a>
+      <div class="navbar-items">
+        <div class="navbar-item" id="booking-button">預定行程</div>
+        <div class="navbar-item" id="member-button">登入/註冊</div>
+      </div>
+    </div>
+  </nav>
+  <hr style="border: 1px solid #E8E8E8;margin: 0px;"/>
+<div class="booking-container" id="booking-success">
+<div class="booking-container-inner">
+  <div class="booking">
+    <div class="booking-div">
+      <div class="booking-header">
+        您好，<div id="booking-info-user-success">Yakko</div>，待預定的行程如下：
+      </div>
+      <div class="booking-info">
+        <div class="booking-info-imgdiv">
+          <img class="booking-info-img" id="booking-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg" />
+        </div>
+        <div class="booking-info-text">
+          <div class="booking-info-text-title">
+            台北一日遊：<div id="booking-name">平安鐘</div>
+          </div>
+          <div class="booking-info-text-item">
+            <b>日期：</b><div id="booking-date">2021-04-23</div>
+          </div>
+          <div class="booking-info-text-item">
+            <b>時間：</b><div id="booking-time">早上 9 點到下午 4 點</div>
+          </div>
+          <div class="booking-info-text-item">
+            <b>費用：</b><div id="booking-price">新台幣 2000 元</div>
+          </div>
+          <div class="booking-info-text-item">
+            <b>地點：</b><div id="booking-address">臺北市 大安區忠孝東路4段</div>
+          </div>
+          <div class="booking-info-text-icondiv">
+            <img class="booking-info-text-icon" onclick="deleteBookingInfo()" src="/static/icons/delete.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr style="border: 1px solid #E8E8E8;margin: 0px;flex:1 0 100%"/>
+  </div>
+  <div class="booking">
+    <div class="booking-div">
+      <div class="booking-contact-title">
+        您的聯絡資訊
+      </div>
+      <div class="booking-contact-item">
+        <div class="input-field-title">聯絡姓名：</div>
+        <input class="input-field" name="name" id="booking-form-user" required/>
+      </div>
+      <div class="booking-contact-item">
+        <div class="input-field-title">您的信箱：</div>
+        <input class="input-field" name="email" id="booking-form-email" required/>
+      </div>
+      <div class="booking-contact-item">
+        <div class="input-field-title">手機號碼：</div>
+        <input class="input-field" name="phone" required/>
+      </div>
+      <div class="booking-contact-footer">
+        <b>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</b>
+      </div>
+    </div>
+    <hr style="border: 1px solid #E8E8E8;margin: 0px;flex:1 0 100%"/>
+  </div>
+  <div class="booking">
+    <div class="booking-div">
+      <div class="booking-contact-title">
+        信用卡付款資訊
+      </div>
+      <div class="booking-contact-item">
+        <div class="input-field-title">卡片號碼：</div>
+        <input class="input-field" name="card-id" placeholder="**** **** **** ****" required/>
+      </div>
+      <div class="booking-contact-item">
+        <div class="input-field-title">過期時間：</div>
+        <input class="input-field" name="card-exp" placeholder="MM/YY" required/>
+      </div>
+      <div class="booking-contact-item" style="margin: 0px 10px 0px 10px;">
+        <div class="input-field-title">驗證密碼：</div>
+        <input class="input-field" name="card-cert" placeholder="CVV" required/>
+      </div>
+    </div>
+    <hr style="border: 1px solid #E8E8E8;margin: 0px;flex:1 0 100%"/>
+  </div>
+  <div class="booking">
+    <div class="booking-div">
+      <div class="booking-button-div">
+        <div class="booking-button-text">
+          總價：新台幣 <div id="booking-button-price">2000</div> 元
+        </div>
+        <div class="booking-button">
+          確認訂購並付款
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="booking-container" id="booking-fail">
+  <div class="booking-container-inner">
+    <div class="booking">
+      <div class="booking-div">
+        <div class="booking-header">
+          您好，<div  id="booking-info-user-fail">Yakko</div>，待預定的行程如下：
+        </div>
+        <div class="booking-fail-text">
+          目前沒有任何待預定的行程
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <nav class="footer">
+    <div class="footer-item">
+      COPYRIGHT © 2021 台北一日遊
+    </div>
+  </nav>
 </body>
 </html>

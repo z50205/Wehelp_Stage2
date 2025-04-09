@@ -50,7 +50,7 @@
     <div class="navbar">
       <a href="/" style="text-decoration: none;"><div class="navbar-title">台北一日遊</div></a>
       <div class="navbar-items">
-        <div class="navbar-item">預定行程</div>
+        <div class="navbar-item" id="booking-button">預定行程</div>
         <div class="navbar-item" id="member-button">登入/註冊</div>
       </div>
     </div>
@@ -75,32 +75,34 @@
             <div class="attraction-title">平安鐘</div>
             <div class="attraction-station">公共藝術 at 忠孝復興</div>
             <div class="attraction-reserveform">
-              <div class="attraction-reserveform-label">
-                訂購導覽行程
-              </div>
-              <div class="attraction-reserveform-text">
-                以此景點為中心的一日行程，帶您探索城市角落故事
-              </div>
-              <div class="attraction-reserveform-label">
-                <div>選擇日期：</div>
-                  <input type="date" class="attraction-reserveform-calender" style="font-size: 16px;border:0px;"/>
-              </div>
-              <div class="attraction-reserveform-label">
-                <div>選擇時間：</div>
-                <div class="attraction-reserveform-time">
-                  <span class="dot"><span class="inner-dot"></span></span>
-                  上半天
+              <form id="booking-form">
+                <div class="attraction-reserveform-label">
+                  訂購導覽行程
                 </div>
-                <div class="attraction-reserveform-time">
-                  <span class="dot"></span>
-                  下半天
+                <div class="attraction-reserveform-text">
+                  以此景點為中心的一日行程，帶您探索城市角落故事
                 </div>
-              </div>
-              <div class="attraction-reserveform-label">
-                <div>導覽費用：</div>
-                <div id="cost" style="font-weight: 400;">新台幣2000元</div>
-              </div>
-              <button  class="attraction-reserveform-button" style="height: 36px;">開始預約行程</button>
+                <div class="attraction-reserveform-label">
+                  <div>選擇日期：</div>
+                    <input type="date" id="booking-time" class="attraction-reserveform-calender" style="font-size: 16px;border:0px;" required/>
+                </div>
+                <div class="attraction-reserveform-label">
+                  <div>選擇時間：</div>
+                  <div class="attraction-reserveform-time">
+                    <span class="dot"><span class="inner-dot"></span></span>
+                    上半天
+                  </div>
+                  <div class="attraction-reserveform-time">
+                    <span class="dot"></span>
+                    下半天
+                  </div>
+                </div>
+                <div class="attraction-reserveform-label">
+                  <div>導覽費用：</div>
+                  <div id="cost" style="font-weight: 400;">新台幣2000元</div>
+                </div>
+                <button  class="attraction-reserveform-button" style="height: 36px;" onclick="createBooking()">開始預約行程</button>
+              </form>
             </div>
           </div>
       </div>

@@ -119,18 +119,25 @@ const getMembership=async ()=>{
         });
         const result=await response.json();
         let memberButton=document.getElementById("member-button");
+        let bookingButton=document.getElementById("booking-button");
         if (result["data"]){
             memberButton.textContent="登出系統";
             memberButton.onclick = ()=>logout();
+            bookingButton.onclick=()=>{
+                window.location.href="/booking";
+            }
         }else{
             memberButton.textContent="登入/註冊";
             memberButton.onclick = ()=>showUserForm(true);
+            bookingButton.onclick = ()=>showUserForm(true);
 
         }
     }catch (error) {
         let memberButton=document.getElementById("member-button");
+        let bookingButton=document.getElementById("booking-button");
         memberButton.textContent="登入/註冊";
         memberButton.onclick = ()=>showUserForm(true);
+        bookingButton.onclick = ()=>showUserForm(true);
           }
 }
 getMembership();

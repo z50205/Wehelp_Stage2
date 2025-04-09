@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi.responses import HTMLResponse,RedirectResponse,JSONResponse
 from fastapi.requests import HTTPConnection
 import os
-from models import AttractionData,MrtData,UserData
+from models import AttractionData,MrtData,UserData,BookingData
 import json
 
 router = APIRouter()
@@ -41,4 +41,37 @@ async def getUserInfo(request: Request):
 @router.put("/api/user/auth",response_class=HTMLResponse, tags=["loginUser"])
 async def loginUser(request: Request,email:str=Form(...),password:str=Form(...)):
     result=UserData.loginUser(email,password)
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.get("/api/booking",response_class=HTMLResponse, tags=["getBookingInfo"])
+async def getUserInfo(request: Request):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        userId=login_result["data"]["id"]
+        result=BookingData.getBookingInfo(userId)
+    else:
+        result={"error": True,"message":"Log in fail."}
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.post("/api/booking",response_class=HTMLResponse, tags=["createBookingInfo"])
+async def createBookingInfo(request: Request,attractionId:int=Form(...),date:str=Form(...),time:str=Form(...),price:int=Form(...)):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        userId=login_result["data"]["id"]
+        result=BookingData.createBookingInfo(userId,attractionId,date,time,price)
+    else:
+        result={"error": True,"message":"Log in fail."}
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.delete("/api/booking",response_class=HTMLResponse, tags=["deleteBookingInfo"])
+async def deleteBookingInfo(request: Request):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        userId=login_result["data"]["id"]
+        result=BookingData.deleteBookingInfo(userId)
+    else:
+        result={"error": True,"message":"Log in fail."}
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)

@@ -21,3 +21,4 @@ from .attraction import AttractionData
 from .mrt import MrtData
 
 from .user import UserData
+from .booking import BookingData
