@@ -8,6 +8,5 @@ deploy-to-production:
   before_script:
     - chmod 400 $SSH_KEY
   script:
-    - echo 'Deploy with deploy file in EC2.'
-    - echo 'Kill the background pid.'
+    - echo 'ReDeploy with deploy file in EC2.'
     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$EC2_IP "$DEPLOY_COMMAND"
