@@ -1,3 +1,4 @@
+let booking_data=null;
 fetchdata();
 async function fetchdata(){
     let response=await fetch("/api/booking",{
@@ -37,6 +38,7 @@ async function fetchdata(){
         bookingFormEmail.value=jwt_dict["email"];
         let bookingSuccess=document.getElementById("booking-success");
         bookingSuccess.style.display="flex";
+        booking_data={"attraction_id":result["data"]["attraction"]["id"],"attraction_name":result["data"]["attraction"]["name"],"attraction_address":result["data"]["attraction"]["address"],"attraction_image":result["data"]["attraction"]["image"],"date":result["data"]["date"],"time":result["data"]["time"],"price":result["data"]["price"]};
     }else if(result["message"]=="Get record fail."){
         let jwt_dict=parseJwt (localStorage.getItem("TOKEN"));
         let bookingInfoUserFail=document.getElementById("booking-info-user-fail");
