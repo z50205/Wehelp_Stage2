@@ -94,6 +94,8 @@ async def createOrders(request: Request):
     result=OrderData.createOrder(userId,name,email,phone,items)
     if "ok" in result:
         result=OrderData.payOrderPrime(prime,result["order_id"],name,items[0]["price"],phone)
+        if "data" in result:
+            BookingData.deleteBookingInfo(userId)
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
 
 @router.get("/api/order/{order_id}",response_class=HTMLResponse, tags=["getOrder"])
