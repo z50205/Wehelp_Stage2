@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi.responses import HTMLResponse,RedirectResponse,JSONResponse
 from fastapi.requests import HTTPConnection
 import os
-from models import AttractionData,MrtData,UserData,BookingData
+from models import AttractionData,MrtData,UserData,BookingData,OrderData
 import json
 
 router = APIRouter()
@@ -74,4 +74,38 @@ async def deleteBookingInfo(request: Request):
         result=BookingData.deleteBookingInfo(userId)
     else:
         result={"error": True,"message":"Log in fail."}
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.post("/api/orders",response_class=HTMLResponse, tags=["createOrder"])
+async def createOrders(request: Request):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        userId=login_result["data"]["id"]
+    else:
+        result={"error": True,"message":"Log in fail."}
+        return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+    data = await request.json()
+    prime=data['prime']
+    email=data['order']['contact']['email']
+    phone=data['order']['contact']['phone']
+    name=data['order']['contact']['name']
+    items=[{"attraction_id":data['order']['trip']['attraction']['id'],"date":data['order']['trip']['date'],"time":data['order']['trip']['time'],"price":data['order']['price']}]
+    result=OrderData.createOrder(userId,name,email,phone,items)
+    if "ok" in result:
+        result=OrderData.payOrderPrime(prime,result["order_id"],name,items[0]["price"],phone)
+        if "data" in result:
+            BookingData.deleteBookingInfo(userId)
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.get("/api/order/{order_id}",response_class=HTMLResponse, tags=["getOrder"])
+async def createOrders(request: Request,order_id:str):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        user_id=login_result["data"]["id"]
+    else:
+        result={"error": True,"message":"Log in fail."}
+        return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+    result=OrderData.getOrder(user_id,order_id)
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
