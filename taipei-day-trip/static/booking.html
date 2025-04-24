@@ -7,6 +7,11 @@
   <link rel="stylesheet"  href="/static/styles/popup.css">
   <script src="/static/scripts/popup.js" defer></script>
   <script src="/static/scripts/booking.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+  <script src="/static/scripts/order.js" defer></script>
+
+
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
   <title>Booking</title>
 </head>
@@ -58,6 +63,7 @@
   <hr style="border: 1px solid #E8E8E8;margin: 0px;"/>
 <div class="booking-container" id="booking-success">
 <div class="booking-container-inner">
+<form id="orderTappay">
   <div class="booking">
     <div class="booking-div">
       <div class="booking-header">
@@ -106,7 +112,7 @@
       </div>
       <div class="booking-contact-item">
         <div class="input-field-title">手機號碼：</div>
-        <input class="input-field" name="phone" required/>
+        <input class="input-field" name="phone" id="booking-form-phone" required/>
       </div>
       <div class="booking-contact-footer">
         <b>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</b>
@@ -121,15 +127,15 @@
       </div>
       <div class="booking-contact-item">
         <div class="input-field-title">卡片號碼：</div>
-        <input class="input-field" name="card-id" placeholder="**** **** **** ****" required/>
+        <div class="input-field input-field-tappay" name="card-id" id="card-id"></div>
       </div>
       <div class="booking-contact-item">
         <div class="input-field-title">過期時間：</div>
-        <input class="input-field" name="card-exp" placeholder="MM/YY" required/>
+        <div class="input-field input-field-tappay" name="card-exp" id="card-exp"></div>
       </div>
       <div class="booking-contact-item" style="margin: 0px 10px 0px 10px;">
         <div class="input-field-title">驗證密碼：</div>
-        <input class="input-field" name="card-cert" placeholder="CVV" required/>
+        <div class="input-field input-field-tappay" name="card-cert" id="card-cert"></div>
       </div>
     </div>
     <hr style="border: 1px solid #E8E8E8;margin: 0px;flex:1 0 100%"/>
@@ -140,12 +146,13 @@
         <div class="booking-button-text">
           總價：新台幣 <div id="booking-button-price">2000</div> 元
         </div>
-        <div class="booking-button">
+        <button class="booking-button" id="orderButton">
           確認訂購並付款
-        </div>
+        </button>
       </div>
     </div>
   </div>
+</form>
 </div>
 </div>
 <div class="booking-container" id="booking-fail">

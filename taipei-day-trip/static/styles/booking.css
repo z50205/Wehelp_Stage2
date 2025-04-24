@@ -45,6 +45,9 @@ body{
   padding: 10px;
   box-sizing: border-box;
  }
+ .input-field-tappay{
+  height:38px;
+ }
  .booking-container{
    display: none;
    justify-content: center;
