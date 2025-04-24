@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"  href="/static/styles/member.css">
+  <link rel="stylesheet"  href="/static/styles/popup.css">
+  <script src="/static/scripts/popup.js" defer></script>
+  <script src="/static/scripts/member.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+  <script src="/static/scripts/order.js" defer></script>
+  <title>TapeiTrip</title>
+</head>
+<body>
+  <div id="form-mask" class="mask active">
+    <div id="login-div" class="popup-form">
+      <div class="decobar"></div>
+      <div class="closeicondiv">
+        <img class="closeicon" src="/static/icons/close.png" onclick="showUserForm(false)"/>
+      </div>
+      <form id="login-form" class="login-form">
+        <div class="form-title">
+          登入會員帳號
+        </div>
+        <input type="email" id="login-email" class="form-item" name="email" placeholder="輸入電子信箱" required/>
+        <input type="password" id="login-pw" class="form-item" name="password" placeholder="輸入密碼" required/>
+        <button class="form-button">登入帳戶</button>
+        <div id="login-log" class="form-log"></div>
+        <div class="form-text" onclick="toggleUserForm('signup')">還沒有帳戶?點此註冊</div>
+      </form>
+    </div>
+    <div id="signup-div" class="popup-form">
+      <div class="decobar"></div>
+      <div class="closeicondiv">
+        <img class="closeicon" src="/static/icons/close.png" onclick="showUserForm(false)"/>
+      </div>
+      <form id="signup-form" class="login-form">
+        <div class="form-title">
+          註冊會員帳號
+        </div>
+        <input id="signup-name" class="form-item" placeholder="輸入姓名"  required/>
+        <input type="email" id="signup-email" class="form-item" placeholder="輸入電子信箱"  required/>
+        <input type="password" id="signup-pw" class="form-item" placeholder="輸入密碼"/>
+        <button class="form-button">註冊新帳戶</button>
+        <div id="signup-log" class="form-log"></div>
+        <div class="form-text" onclick="toggleUserForm('login')">已經有帳戶了?點此登入</div>
+      </form>
+    </div>
+  </div>
+  <nav>
+    <div class="navbar">
+      <a href="/" style="text-decoration: none;"><div class="navbar-title">台北一日遊</div></a>
+      <div class="navbar-items">
+        <img class="navbar-avatar" id="avatar" src="/static/icons/avatar.svg"/>
+        <div class="navbar-item" id="member-button">
+          <div class="navbar-member-dropdown-button" id="member-button-text">會員專區</div>
+          <ul class="navbar-member-dropdown-list" id="member-list">
+            <hr class="nav-divider"/>
+            <li class="navbar-member-dropdown-item" id="booking-button">預定行程</li>
+            <li class="navbar-member-dropdown-item" id="user-button">訂單紀錄</li>
+            <li class="navbar-member-dropdown-item" id="logout-button">登出系統</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <hr class="nav-divider"/>
+  <div class="member">
+    <div class="member-div">
+      <div class="member-header">
+        您好，<div id="member-name">Yakko</div>
+      </div>
+      <div class="member-info">
+        <div class="member-info-navbar">
+          <ul class="member-info-navbar-list">
+            <li class="member-info-navbar-item" id="order-toggle">
+              <div class="navbar-icon-div"><img class="navbar-icon" src="/static/icons/order.svg"/></div>
+              <div class="navbar-text">歷史訂單</div>
+            </li>
+            <hr class="nav-divider"/>
+            <li class="member-info-navbar-item" id="info-toggle">
+              <div class="navbar-icon-div"><img class="navbar-icon" src="/static/icons/info.svg"/></div>
+              <div class="navbar-text">會員資料</div>
+            </li>
+            <hr class="nav-divider"/>
+          </ul>
+        </div>
+        <div class="member-info-content">
+          <div id="order" class="member-info-content-div">
+            <div class="member-info-content-title">
+              歷史訂單
+            </div>
+            <div class="info-div">
+              <table class="order-table">
+                <caption>
+                  <div class="order-table-page">
+                    <img src="/static/icons/left.svg" id="order-table-left-icon" style="cursor: pointer;"/>
+                    <div id="order-table-page-number">1</div>
+                    <img src="/static/icons/right.svg" id="order-table-right-icon" style="cursor: pointer;"/>
+                  </div>
+                </caption>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>訂單編號</th>
+                    <th>訂購時間</th>
+                    <th>訂購價格</th>
+                    <th>付款狀態</th>
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+              </table>
+              <div class="order-info" id="order-info">
+              </div>
+              <form class="reorder-form" id="orderTappay">
+                <div class="booking-contact-item">
+                  <div class="input-field-title">卡片號碼：</div>
+                  <div class="input-field input-field-tappay" name="card-id" id="card-id"></div>
+                </div>
+                <div class="booking-contact-item">
+                  <div class="input-field-title">過期時間：</div>
+                  <div class="input-field input-field-tappay" name="card-exp" id="card-exp"></div>
+                </div>
+                <div class="booking-contact-item" style="margin: 0px 10px 0px 10px;">
+                  <div class="input-field-title">驗證密碼：</div>
+                  <div class="input-field input-field-tappay" name="card-cert" id="card-cert"></div>
+                </div>
+                <div class="info-item" style="justify-content: end;">
+                  <button class="info-button" style="margin: 10px;" id="orderButton">
+                    重新付款
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="info" class="member-info-content-div">
+            <div class="member-info-content-title">
+              會員資料
+            </div>
+            <div class="info-div">
+              <form id="info-form">
+                <div class="info-item">
+                  <div class="info-avatar-div" >
+                    <img class="info-avatar-img" id="avatar-img" src="/static/icons/avatar.svg"/>
+                    <label class="info-avatar-input" for="uploadFormFile"><img class="info-avatar-uploadIcon" src="/static/icons/upload.svg"/></label>
+                    <input style="display: none;" type="file" id="uploadFormFile" accept="image/png, image/jpeg"/>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-title">會員姓名：</div>
+                  <input class="input-field" name="name" id="info-user" required/>
+                </div>
+                <div class="info-item">
+                  <div class="info-title">會員信箱：</div>
+                  <input class="input-field" name="email" id="info-email" required/>
+                </div>
+                <div class="info-item" style="justify-content: end;">
+                  <button class="info-button">
+                    修改會員資料
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="footer">
+    <div class="footer-item">
+      COPYRIGHT © 2021 台北一日遊
+    </div>
+  </nav>
+</body>
+</html>

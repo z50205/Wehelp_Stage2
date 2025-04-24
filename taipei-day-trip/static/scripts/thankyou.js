@@ -10,10 +10,11 @@ const get_order=async ()=>{
     })
     const result=await response.json();
     if(result["data"]){
-        document.getElementById("order-id").textContent=result["data"]["number"];
+        let orderId=document.getElementById("order-id");
+        orderId.textContent=result["data"]["number"];
     }else if(result["message"]=="Log in fail."){
         window.location.href="/";
     }
-    console.log(result);
+
 }
 get_order();

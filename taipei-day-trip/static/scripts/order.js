@@ -123,7 +123,12 @@ $('#orderTappay').on('submit', function (event) {
         if (result.status !== 0) {
             return
         }
-        createPrime(result.card.prime);
+        if (window.location.pathname=="/booking"){
+            createPrime(result.card.prime);
+        }
+        else if (window.location.pathname=="/member"){
+            reOrderPayPrime(result.card.prime);
+        }
     })
 })
 const createPrime= async (prime)=>{
@@ -156,8 +161,34 @@ const createPrime= async (prime)=>{
         body: JSON.stringify(orderdata),
     })
     const result=await response.json();
-    if (result["data"]["number"]){
+    if (result && result.data && result.data.number){
         window.location.href="/thankyou?number="+result["data"]["number"];
+    }
+    else{
+        window.location.reload();
+        alert("付款失敗，請於會員專區重新付款。")
+    }
+}
+
+const reOrderPayPrime= async (prime)=>{
+    const orderdata={
+        "prime": prime,
+        "order": ordernum
+      }
+    let response=await fetch("/api/orders",{
+        method: "PATCH",
+        headers: {
+            'Authorization': `Bearer `+localStorage.getItem("TOKEN"),
+        },
+        body: JSON.stringify(orderdata),
+    })
+    const result=await response.json();
+    if (result && result.data && result.data.number){
+        window.location.reload();
+    }
+    else{
+        window.location.reload();
+        alert("付款失敗，請更換付款方式或聯絡管理員。")
     }
 }
 function setNumberFormGroupToError(selector) {

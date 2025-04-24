@@ -119,23 +119,35 @@ const getMembership=async ()=>{
         });
         const result=await response.json();
         let memberButton=document.getElementById("member-button");
+        let memberButtonText=document.getElementById("member-button-text");
+        let userButton=document.getElementById("user-button");
+        let logoutButton=document.getElementById("logout-button");
         let bookingButton=document.getElementById("booking-button");
         if (result["data"]){
-            memberButton.textContent="登出系統";
-            memberButton.onclick = ()=>logout();
+            memberButtonText.textContent="會員專區";
+            memberButton.onclick = ()=>showMemberList();
+            userButton.onclick=()=>{
+                window.location.href="/member";
+            }
+            logoutButton.onclick = ()=>logout();
             bookingButton.onclick=()=>{
                 window.location.href="/booking";
             }
+            let jwt_dict=parseJwt (localStorage.getItem("TOKEN"));
+            if(jwt_dict["avatar_src"]){
+                let navbarAvatar=document.getElementById("avatar");
+                navbarAvatar.src="/avatar/"+jwt_dict["avatar_src"];
+            }
         }else{
-            memberButton.textContent="登入/註冊";
+            memberButtonText.textContent="登入/註冊";
             memberButton.onclick = ()=>showUserForm(true);
             bookingButton.onclick = ()=>showUserForm(true);
-
         }
     }catch (error) {
         let memberButton=document.getElementById("member-button");
+        let memberButtonText=document.getElementById("member-button-text");
         let bookingButton=document.getElementById("booking-button");
-        memberButton.textContent="登入/註冊";
+        memberButtonText.textContent="登入/註冊";
         memberButton.onclick = ()=>showUserForm(true);
         bookingButton.onclick = ()=>showUserForm(true);
           }
@@ -144,4 +156,27 @@ getMembership();
 async function logout(){
     localStorage.removeItem("TOKEN");
     window.location.reload();
+    if(window.location.pathname=="/member")
+    {
+        window.location.href="/";
+    }
+}
+
+const showMemberList=()=>{
+    let memberListButton=document.getElementById("member-list");
+    let pivot=memberListButton.style.display
+    if(pivot=="block"){
+        memberListButton.style.display="none";
+    }else{
+        memberListButton.style.display="block";
+    }
+}
+function parseJwt (token) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    
+    return JSON.parse(jsonPayload);
 }

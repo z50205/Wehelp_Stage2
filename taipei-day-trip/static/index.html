@@ -8,7 +8,7 @@
   <script src="/static/scripts/index.js" defer></script>
   <script src="/static/scripts/popup.js" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-  <title>Index</title>
+  <title>TapeiTrip</title>
 </head>
 <body>
   <div id="form-mask" class="mask active">
@@ -50,8 +50,16 @@
     <div class="navbar">
       <a href="/" style="text-decoration: none;"><div class="navbar-title">台北一日遊</div></a>
       <div class="navbar-items">
-        <div class="navbar-item" id="booking-button">預定行程</div>
-        <div class="navbar-item" id="member-button">登入/註冊</div>
+        <img class="navbar-avatar" id="avatar" src="/static/icons/avatar.svg"/>
+        <div class="navbar-item" id="member-button">
+          <div class="navbar-member-dropdown-button" id="member-button-text">會員專區</div>
+          <ul class="navbar-member-dropdown-list" id="member-list">
+            <hr class="nav-divider"/>
+            <li class="navbar-member-dropdown-item" id="booking-button">預定行程</li>
+            <li class="navbar-member-dropdown-item" id="user-button">訂單紀錄</li>
+            <li class="navbar-member-dropdown-item" id="logout-button">登出系統</li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>

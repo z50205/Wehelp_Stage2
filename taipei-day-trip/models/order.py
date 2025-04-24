@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional
 from . import cnxpool,conn,ItemData
-import os,uuid,http.client,json
+import os,uuid,http.client,json, datetime
 from dotenv import load_dotenv
+from datetime import timezone
 
 load_dotenv()
 APP_KEY = os.environ.get("APP_KEY","NOKEY")
@@ -15,15 +16,17 @@ class OrderData(BaseModel):
     phone:str #nn
     status:Optional[int] #nn
     isPaid:bool=False #nn
+    create_time:str=None
 
     @classmethod
     def createOrder(self,userId,name,email,phone,items):
         try:
+            dt_iso = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds').replace("+00:00", "Z")
             cnx=cnxpool.get_connection()
             cur=cnx.cursor()
             order_id=str(uuid.uuid4())
-            sql="insert into orders (id,user_id,name,email,phone,is_paid) values (%s,%s,%s,%s,%s,%s)"
-            val=(order_id,userId,name,email,phone,False)
+            sql="insert into orders (id,user_id,name,email,phone,is_paid,create_time) values (%s,%s,%s,%s,%s,%s,%s)"
+            val=(order_id,userId,name,email,phone,False,dt_iso)
             cur.execute(sql,val)
             cnx.commit()
             cnx.close()
@@ -95,8 +98,8 @@ class OrderData(BaseModel):
         try:
             cnx=cnxpool.get_connection()
             cur=cnx.cursor()
-            sql = "select O.id,I.price,A.id,A.name,A.address,A.images,I.date,I.time,O.name,O.email,O.phone,O.status from items I Join orders O on I.order_id=O.id Join attractions A on I.attractionId=A.id where I.order_id=%s"
-            val = (order_id,)
+            sql = "select O.id,I.price,A.id,A.name,A.address,A.images,I.date,I.time,O.name,O.email,O.phone,O.status,O.create_time from items I Join orders O on I.order_id=O.id Join attractions A on I.attractionId=A.id where I.order_id=%s and O.user_id=%s"
+            val = (order_id,user_id)
             cur.execute(sql,val)
             result = cur.fetchall()
             res = result[0]
@@ -106,7 +109,7 @@ class OrderData(BaseModel):
                 "price":res[1],
                 "trip":{
                     "attraction":{
-                        "id":res[2],"name":res[3],"address":res[4],"image":images_converter(res[5][0])
+                        "id":res[2],"name":res[3],"address":res[4],"image":images_converter(res[5])
                     },
                     "date":res[6],
                     "time":res[7],
@@ -116,18 +119,49 @@ class OrderData(BaseModel):
                     "email": res[9],
                     "phone":res[10],
                 },
-                "status": res[11]
+                "status": res[11],
+                "create_time": res[12]
             }}
         except:
             result={"error": True,"message":"Get record failed."}
         return result
     
+    @classmethod
+    def getOrders(self,user_id,page):
+        perpage=6
+        try:
+            cnx=cnxpool.get_connection()
+            cur=cnx.cursor()
+            sql = "select O.id,I.price,A.id,A.name,A.address,A.images,I.date,I.time,O.name,O.email,O.phone,O.status,O.create_time\
+                  from items I Join orders O on I.order_id=O.id Join attractions A on I.attractionId=A.id where O.user_id=%s \
+                ORDER BY O.create_time DESC Limit %s offSET %s "
+            val = (user_id,perpage+1,(page-1)*perpage)
+            cur.execute(sql,val)
+            results = cur.fetchall()
+            cnx.close()
+            datas =[]
+            for i in  range(min(perpage,len(results))):
+                datas.append({
+                "number":results[i][0],
+                "price":results[i][1],
+                "status": results[i][11],
+                "create_time": results[i][12]
+                })
+            if len(results)==perpage+1:
+                ans=page+1
+            else:
+                ans=None
+            result={"data":datas,"nextPage":ans}
+        except Exception as e:
+            result={"error": True,"message":"Get record failed."}
+        return result
+
 def images_converter(data):
     images_raw=data.split("https")
     images=[]
     for img in images_raw:
         if img[-3:]=='png' or img[-3:]=='PNG'  or img[-3:]=='jpg'  or img[-3:]=='JPG':
             images.append("https"+img)
-    return images
+    return images[0]
 
         

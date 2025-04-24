@@ -2,37 +2,6 @@ body{
    margin:0px;
    font-family: 'Noto Sans TC';
 }
-nav{
- background-color:white;  
- display: flex;
- justify-content: center;
- align-items: center;
-}
-
-.navbar{
-    width: 100%;
-    max-width:1200px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;    
-}
-.navbar-title{
-    color:#448899;
-    font-size: 30px;
-    font-weight: 700;
-    padding: 10px;
-}
-.navbar-items{
-    display: flex;
-    font-size: 16px;
-    font-weight: 500;
-}
-.navbar-item{
-    color:#448899;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 10px;
-}
 .search{
     display: flex;
     position: relative;
@@ -68,12 +37,14 @@ nav{
     height: fit-content;
     position: absolute;
     bottom:0px;
+    cursor: default;
 }
 .search-intro-text2{
     color: #F8F8F8;
     font-size: 28px;
     font-weight: 700;
     height: fit-content;
+    cursor: default;
 }
 .search-bar{
     display: flex;
@@ -113,6 +84,7 @@ textarea:focus,input:focus{
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 .search-bar-button-icon{
     width: 30px;
@@ -185,6 +157,7 @@ textarea:focus,input:focus{
     width: 32px;
     height: 32px;
     opacity: 50%;
+    cursor: pointer;
 }
 .listbar-button-icon:hover{
     opacity: 100%;
@@ -259,25 +232,6 @@ textarea:focus,input:focus{
     background-color: #ffffff;
     padding: 10px;
 }
-.footer{
-    width: 100%;
-    background-color: #757575;
-    display: flex;
-    justify-self: center;
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
-}
-
-.footer-item{
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 16px;
-    font-style: Noto Sans TC;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 
 @media (max-width: 1200px) {
     .search-inner{

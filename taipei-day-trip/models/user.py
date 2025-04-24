@@ -13,6 +13,7 @@ class UserData(BaseModel):
     email:str=None #nn un
     password_hash:str=None #nn
     name:str=None #nn
+    avatar_src:str=None #un
     create_time:str=None
 
     def set_pw(self,password):
@@ -59,7 +60,7 @@ class UserData(BaseModel):
                 return {"error": True,"message":message}
             # User exist, auth correct.
             elif self.check_pw(self,password,result[0][2]):
-                encoded_jwt = jwt.encode({"id":result[0][0],"name":result[0][1],"email":result[0][3],"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(days=7)}, JWT_SECRET, algorithm="HS256")
+                encoded_jwt = jwt.encode({"id":result[0][0],"name":result[0][1],"email":result[0][3],"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(days=7),"avatar_src":result[0][5]}, JWT_SECRET, algorithm="HS256")
                 return {"token":encoded_jwt}
             # User exist, auth incorrect.
             else:
@@ -98,5 +99,40 @@ class UserData(BaseModel):
         except Exception as e:
             print("Something went wrong: {}".format(e))
             return None
+        finally:
+            cnx.close()
+
+    @classmethod
+    def updateUserInfo(self,userId,name,email,avatar):
+        cnx=cnxpool.get_connection()
+        cur=cnx.cursor()
+        try:
+            sql="update users set name=%s,email=%s"
+            val=[name,email]
+            if avatar:
+                avatar_src=userId+"."+avatar.filename.split(".")[1]
+                sql+=",avatar_src=%s"
+                val.append(avatar_src)
+            sql+=" where id=%s"
+            val.append(userId)
+            cur.execute(sql,tuple(val))
+            cnx.commit()
+            if avatar:
+                file_path = "./static/avatar/"+avatar_src
+                with open(file_path, "wb") as f:
+                    f.write(avatar.file.read())
+            sql="select * from users where email=%s;"
+            val=(email,)
+            cur.execute(sql,val)
+            result = cur.fetchall()
+            encoded_jwt = jwt.encode({"id":result[0][0],"name":result[0][1],"email":result[0][3],"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(days=7),"avatar_src":result[0][5]}, JWT_SECRET, algorithm="HS256")
+            return {"token":encoded_jwt}
+        except conn.Error as err:
+            if err.errno==1062:
+                message="Repeated Email"
+            return {"error": True,"message": message}
+        except Exception as e:
+            message="Something wrong, please contact webmaster."
+            return {"error": True,"message": message}
         finally:
             cnx.close()

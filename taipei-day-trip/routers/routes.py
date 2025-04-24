@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Request,Form,Depends,HTTPException,status
-from typing import Annotated
-from fastapi.responses import HTMLResponse,RedirectResponse,JSONResponse
+from fastapi import APIRouter, Request,Form,Depends,HTTPException,status,UploadFile
+from typing import Annotated,Optional
+from fastapi.responses import HTMLResponse,RedirectResponse,JSONResponse,FileResponse
 from fastapi.requests import HTTPConnection
 import os
 from models import AttractionData,MrtData,UserData,BookingData,OrderData
@@ -41,6 +41,17 @@ async def getUserInfo(request: Request):
 @router.put("/api/user/auth",response_class=HTMLResponse, tags=["loginUser"])
 async def loginUser(request: Request,email:str=Form(...),password:str=Form(...)):
     result=UserData.loginUser(email,password)
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.patch("/api/user/info",response_class=HTMLResponse, tags=["loginUser"])
+async def updateUserInfo(request: Request,name:str=Form(...),email:str=Form(...),avatar= Form(None)):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        userId=login_result["data"]["id"]
+    else:
+        result={"error": True,"message":"Log in fail."}
+    result=UserData.updateUserInfo(userId,name,email,avatar)
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
 
 @router.get("/api/booking",response_class=HTMLResponse, tags=["getBookingInfo"])
@@ -93,9 +104,28 @@ async def createOrders(request: Request):
     items=[{"attraction_id":data['order']['trip']['attraction']['id'],"date":data['order']['trip']['date'],"time":data['order']['trip']['time'],"price":data['order']['price']}]
     result=OrderData.createOrder(userId,name,email,phone,items)
     if "ok" in result:
+        BookingData.deleteBookingInfo(userId)
         result=OrderData.payOrderPrime(prime,result["order_id"],name,items[0]["price"],phone)
-        if "data" in result:
-            BookingData.deleteBookingInfo(userId)
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.patch("/api/orders",response_class=HTMLResponse, tags=["createOrder"])
+async def createOrders(request: Request):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        user_id=login_result["data"]["id"]
+    else:
+        result={"error": True,"message":"Log in fail."}
+        return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+    data = await request.json()
+    prime=data['prime']
+    order_id=data['order']
+    result=OrderData.getOrder(user_id,order_id)
+    if "data" in result:
+        name=result["data"]["contact"]["name"]
+        price=result["data"]["price"]
+        phone=result["data"]["contact"]["phone"]
+        result=OrderData.payOrderPrime(prime,order_id,name,price,phone)
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
 
 @router.get("/api/order/{order_id}",response_class=HTMLResponse, tags=["getOrder"])
@@ -109,3 +139,20 @@ async def createOrders(request: Request,order_id:str):
         return JSONResponse(status_code=status.HTTP_200_OK,content=result)
     result=OrderData.getOrder(user_id,order_id)
     return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.get("/api/orders",response_class=HTMLResponse, tags=["getOrder"])
+async def createOrders(request: Request,page:int):
+    jwt_token=request.headers["authorization"].split("Bearer ")[1]
+    login_result=UserData.getUser(jwt_token)
+    if(login_result):
+        user_id=login_result["data"]["id"]
+    else:
+        result={"error": True,"message":"Log in fail."}
+        return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+    result=OrderData.getOrders(user_id,page)
+    return JSONResponse(status_code=status.HTTP_200_OK,content=result)
+
+@router.get("/avatar/{avatar_src}",response_class=HTMLResponse, tags=["getOrder"])
+async def createOrders(request: Request,avatar_src:str):
+    file_path = "./static/avatar/"+avatar_src
+    return FileResponse(file_path, media_type="image/*")
