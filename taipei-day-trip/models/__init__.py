@@ -5,11 +5,12 @@ import os
 
 load_dotenv()
 DB_USERNAME = os.environ.get("DB_USERNAME","1234")
+DB_HOST = os.environ.get("DB_HOST","1234")
 DB_PASSWORD = os.environ.get("DB_PASSWORD","1234")
 JWT_SECRET=os.environ.get("JWT_SECRET","secret")
 
 dbconfig = {
-  "host":"localhost",
+  "host":DB_HOST,
   "database": "website",
   "user":DB_USERNAME,
   "password":DB_PASSWORD,

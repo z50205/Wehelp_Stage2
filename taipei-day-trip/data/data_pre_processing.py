@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+DB_HOST = os.environ.get("DB_HOST","1234")
 DB_USERNAME = os.environ.get("DB_USERNAME","1234")
 DB_PASSWORD = os.environ.get("DB_PASSWORD","1234")
 
@@ -20,7 +21,7 @@ with open("taipei-day-trip/data/taipei-attractions.json", 'r',encoding="utf-8") 
 
 # Step2：mysql伺服器建立
 dbconfig = {
-  "host":"localhost",
+  "host":DB_HOST,
   "database": "website",
   "user":DB_USERNAME,
   "password":DB_PASSWORD,

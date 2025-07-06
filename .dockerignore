@@ -1,0 +1,7 @@
+./taipei-day-trip/.env
+./trip_env
+./Dockerfile
+./docker-compose.yml
+./docker_local
+alembic.ini
+migrations
